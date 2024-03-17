@@ -57,7 +57,7 @@ public interface IWeather {
      * @param vehicle VehicleEnum of vehicle.
      * @return If vehicle is allowed to drive in this weather condition.
      */
-    default boolean isAllowed(VehicleEnum vehicle) {
+    default boolean isNotAllowed(VehicleEnum vehicle) {
         return notAllowedVehicles[vehicle.label];
     }
 

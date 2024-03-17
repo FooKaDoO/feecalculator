@@ -6,11 +6,11 @@ import com.feecalculator.app.enums.WeatherEnum;
 
 public interface IPhenomenon extends IWeather {
     WeatherEnum weatherType = WeatherEnum.PHENOMENON;
-    PhenomenonEnum phenomenon = null;
+    PhenomenonEnum phenomenonEnum = null;
     @Override
     default boolean isThis(Double val) {
-        if (phenomenon == null)
+        if (phenomenonEnum == null)
             return false;
-        return val.equals(phenomenon.label);
+        return val.equals(phenomenonEnum.label);
     }
 }
