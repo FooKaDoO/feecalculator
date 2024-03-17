@@ -4,6 +4,7 @@ import com.feecalculator.app.entity.Station;
 import com.feecalculator.app.enums.PhenomenonEnum;
 import com.feecalculator.app.enums.StationEnum;
 import com.feecalculator.app.enums.VehicleEnum;
+import com.feecalculator.app.enums.WeatherEnum;
 import com.feecalculator.app.error.NotAllowedError;
 import com.feecalculator.app.repository.FeeRepository;
 import com.feecalculator.app.repository.StationRepository;
@@ -103,5 +104,29 @@ public class FeeService {
                 windSpeed,
                 fee
         );
+    }
+
+    /**
+     * Sets fee according to specified parameters.
+     * @param whatToSet The type of fee to set.
+     * @param valToSet The specific fee to set.
+     * @param vehicle The vehicle for the fee.
+     * @param fee The fee.
+     * @return true if no problems.
+     */
+    public Boolean setFee(String whatToSet,
+                          String valToSet,
+                          String vehicle,
+                          Double fee) {
+        if (whatToSet.toLowerCase().equals("city")) {
+            setStationFee(valToSet, vehicle, fee);
+            return true;
+        }
+        switch (WeatherEnum.fromName(whatToSet).label) {
+            case 0 -> setPhenomenonFee(valToSet, vehicle, fee);
+            case 1 -> setWindSpeedFee(Double.parseDouble(valToSet), vehicle, fee);
+            case 2 -> setTemperatureFee(Double.parseDouble(valToSet), vehicle, fee);
+        }
+        return true;
     }
 }

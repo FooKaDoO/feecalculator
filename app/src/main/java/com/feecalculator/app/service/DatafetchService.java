@@ -20,6 +20,13 @@ public class DatafetchService {
         return restTemplate.getForObject(URI, String.class);
     }
 
+    /**
+     * Maps XML string to Observations object.
+     * @param XML Given XML String.
+     * @return Observations object from mapped String.
+     * @throws JsonProcessingException Thrown if error in processing XML.
+     */
+
     public Observations mapXMLtoEntity(String XML) throws JsonProcessingException {
         XmlMapper xmlMapper = new XmlMapper();
         return xmlMapper.readValue(XML, Observations.class);
