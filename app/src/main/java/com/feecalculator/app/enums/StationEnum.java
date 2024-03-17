@@ -16,11 +16,14 @@ public enum StationEnum {
 
     /**
      * Return StationEnum by WMO code.<br>
-     * Used for mapping data without needing to do String comparisons.
+     * Used for mapping data without needing to do String comparisons. <br>
+     * If WMO code is null, returns null.
      * @param WMO Station's WMO code.
      * @return Enum of respective station or null if station is not "Tallinn-Harku", "Tartu-Tõravere" or "Pärnu".
      */
     public static StationEnum fromWMOCode(Integer WMO) {
+        if (WMO == null)
+            return null;
         return switch (WMO) {
             case 26038 -> StationEnum.TALLINN;
             case 26242 -> StationEnum.TARTU;
