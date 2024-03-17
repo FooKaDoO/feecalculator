@@ -40,5 +40,5 @@ public interface IStation {
      * Double matrix which has fees for each vehicle based on
      * VehicleEnums count.
      */
-    Double[] fees = new Double[VehicleEnum.values().length];
+    double[] fees = new double[VehicleEnum.values().length];
 }

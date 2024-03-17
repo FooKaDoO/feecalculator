@@ -7,6 +7,7 @@ import com.feecalculator.app.dto.IWeatherTypes.IWindSpeed;
 import com.feecalculator.app.enums.PhenomenonEnum;
 import com.feecalculator.app.enums.StationEnum;
 import com.feecalculator.app.enums.VehicleEnum;
+import com.feecalculator.app.error.NotAllowedError;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -161,8 +162,9 @@ public class FeeRepository {
      * for given temperature.
      * @param temperature Given temperature value.
      * @return Matching ITemperature instance.
+     * @throws IndexOutOfBoundsException if there isn't such a temperature instance.
      */
-    private ITemperature getSpecificTemperature(Double temperature) {
+    private ITemperature getSpecificTemperature(Double temperature) throws IndexOutOfBoundsException  {
         return temperatures.stream()
                 .filter(t -> t.isThis(temperature))
                 .collect(Collectors.toList())
@@ -174,8 +176,9 @@ public class FeeRepository {
      * for given wind speed.
      * @param windSpeed Given wind speed value.
      * @return Matching IWindSpeed instance.
+     * @throws IndexOutOfBoundsException if there isn't such a windspeed instance.
      */
-    private IWindSpeed getSpecificWindSpeed(Double windSpeed) {
+    private IWindSpeed getSpecificWindSpeed(Double windSpeed) throws IndexOutOfBoundsException {
         return windSpeeds.stream()
                 .filter(w -> w.isThis(windSpeed))
                 .collect(Collectors.toList())
@@ -194,45 +197,58 @@ public class FeeRepository {
     }
 
     /**
-     * Gets the given vehicle's fee with given phenomenon.
+     * Gets the given vehicle's fee with given phenomenon. <br>
+     * If there is no phenomenon, returns 0.0
      * @param vehicle Given vehicle.
      * @param phenomenon Given phenomenon.
      * @return Fee.
-     * @throws Exception If vehicle is not allowed to drive in the weather condition.
+     * @throws NotAllowedError If vehicle is not allowed to drive in the weather condition.
      */
-    public Double getPhenomenonFee(VehicleEnum vehicle, PhenomenonEnum phenomenon) throws Exception {
+    public Double getPhenomenonFee(VehicleEnum vehicle, PhenomenonEnum phenomenon) throws NotAllowedError {
+        if (phenomenon == null)
+            return 0.0;
         IPhenomenon p = this.phenomenons.get(phenomenon);
         if (p.isNotAllowed(vehicle))
-            throw new Exception("Usage of selected vehicle type is forbidden");
+            throw new NotAllowedError();
         return p.getFee(vehicle);
     }
 
     /**
-     * Gets the given vehicle's fee with given air temperature.
+     * Gets the given vehicle's fee with given air temperature.<br>
+     * If there does not exist an instance like this, returns 0.0
      * @param vehicle Given vehicle.
      * @param temperature Given air temperature.
      * @return Fee.
-     * @throws Exception If vehicle is not allowed to drive in the weather condition.
+     * @throws NotAllowedError If vehicle is not allowed to drive in the weather condition.
      */
-    public Double getTemperatureFee(VehicleEnum vehicle, Double temperature) throws Exception {
-        ITemperature t = getSpecificTemperature(temperature);
-        if (t.isNotAllowed(vehicle))
-            throw new Exception("Usage of selected vehicle type is forbidden");
-        return t.getFee(vehicle);
+    public Double getTemperatureFee(VehicleEnum vehicle, Double temperature) throws NotAllowedError {
+        try {
+            ITemperature t = getSpecificTemperature(temperature);
+            if (t.isNotAllowed(vehicle))
+                throw new NotAllowedError();
+            return t.getFee(vehicle);
+        } catch (IndexOutOfBoundsException e) {
+            return 0.0;
+        }
     }
 
     /**
-     * Gets the given vehicle's fee with given wind speed.
+     * Gets the given vehicle's fee with given wind speed.<br>
+     * If there does not exist an instance like this, returns 0.0
      * @param vehicle Given vehicle.
      * @param windSpeed Given wind speed.
      * @return Fee.
-     * @throws Exception If vehicle is not allowed to drive in the weather condition.
+     * @throws NotAllowedError If vehicle is not allowed to drive in the weather condition.
      */
-    public Double getWindSpeedFee(VehicleEnum vehicle, Double windSpeed) throws Exception {
-        IWindSpeed w = getSpecificWindSpeed(windSpeed);
-        if (w.isNotAllowed(vehicle))
-            throw new Exception("Usage of selected vehicle type is forbidden");
-        return getSpecificWindSpeed(windSpeed).getFee(vehicle);
+    public Double getWindSpeedFee(VehicleEnum vehicle, Double windSpeed) throws NotAllowedError {
+        try {
+            IWindSpeed w = getSpecificWindSpeed(windSpeed);
+            if (w.isNotAllowed(vehicle))
+                throw new NotAllowedError();
+            return getSpecificWindSpeed(windSpeed).getFee(vehicle);
+        } catch (IndexOutOfBoundsException e) {
+            return 0.0;
+        }
     }
 
     /**
@@ -256,23 +272,33 @@ public class FeeRepository {
     }
 
     /**
-     * Sets the fee of given vehicle with the given air temperature.
+     * Sets the fee of given vehicle with the given air temperature.<br>
+     * If such an instance does not exist, doesn't do anything.
      * @param vehicle given vehicle.
      * @param temperature given air temperature.
      * @param fee New fee.
      */
     public void setTemperatureFee(VehicleEnum vehicle, Double temperature, Double fee) {
-        getSpecificTemperature(temperature).setFee(vehicle, fee);
+        try {
+            getSpecificTemperature(temperature).setFee(vehicle, fee);
+        } catch (IndexOutOfBoundsException e) {
+
+        }
     }
 
     /**
-     * Sets the fee of given vehicle with the given wind speed.
+     * Sets the fee of given vehicle with the given wind speed.<br>
+     * If such an instance does not exist, doesn't do anything.
      * @param vehicle given vehicle.
      * @param windSpeed given wind speed.
      * @param fee New fee.
      */
     public void setWindSpeedFee(VehicleEnum vehicle, Double windSpeed, Double fee) {
-        getSpecificWindSpeed(windSpeed).setFee(vehicle, fee);
+        try {
+            getSpecificWindSpeed(windSpeed).setFee(vehicle, fee);
+        } catch (IndexOutOfBoundsException e) {
+
+        }
     }
 
 }
