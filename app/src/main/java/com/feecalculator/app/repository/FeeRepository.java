@@ -41,6 +41,16 @@ public class FeeRepository {
         for (StationEnum station : StationEnum.values()) {
             stations.put(station, new IStation() {
                 final StationEnum stationEnum = station;
+                public Double getFee(VehicleEnum vehicle) {
+                    return fees[vehicle.label];
+                };
+                public void setFee(VehicleEnum vehicle, Double fee) {
+                    fees[vehicle.label] = fee;
+                }
+                public void removeFee(VehicleEnum vehicle) {
+                    fees[vehicle.label] = 0.0;
+                }
+                double[] fees = new double[VehicleEnum.values().length];
             });
         }
         /**
@@ -75,6 +85,44 @@ public class FeeRepository {
         for (PhenomenonEnum phenomenon : PhenomenonEnum.values()) {
             phenomenons.put(phenomenon, new IPhenomenon() {
                 final PhenomenonEnum phenomenonEnum = phenomenon;
+                @Override
+                public boolean isThis(Double val) {
+                    if (phenomenonEnum == null)
+                        return false;
+                    return val.equals(phenomenonEnum.label);
+                }
+
+                public Double getFee(VehicleEnum vehicle) {
+                    return fees[vehicle.label];
+                };
+
+
+                public void setFee(VehicleEnum vehicle, Double fee) {
+                    fees[vehicle.label] = fee;
+                }
+
+
+                public void removeFee(VehicleEnum vehicle) {
+                    fees[vehicle.label] = 0.0;
+                }
+
+                double[] fees = new double[VehicleEnum.values().length];
+
+                public boolean isNotAllowed(VehicleEnum vehicle) {
+                    return notAllowedVehicles[vehicle.label];
+                }
+
+                public void allow(VehicleEnum vehicle) {
+                    notAllowedVehicles[vehicle.label] = false;
+                }
+
+                public void disallow(VehicleEnum vehicle) {
+                    notAllowedVehicles[vehicle.label] = true;
+                }
+
+                boolean[] notAllowedVehicles = new boolean[VehicleEnum.values().length];
+
+
             });
         }
 
@@ -118,11 +166,81 @@ public class FeeRepository {
          * Less than -10 degrees and -10 to 0 degrees.
          * Only scooter and bike have fees.
          */
-        ITemperature lessThanTen = temperature -> temperature < -10.0;
+        ITemperature lessThanTen = new ITemperature() {
+            @Override
+            public boolean isThis(Double val) {
+                return val < -10.0;
+            }
+            public Double getFee(VehicleEnum vehicle) {
+                return fees[vehicle.label];
+            };
+
+
+            public void setFee(VehicleEnum vehicle, Double fee) {
+                fees[vehicle.label] = fee;
+            }
+
+
+            public void removeFee(VehicleEnum vehicle) {
+                fees[vehicle.label] = 0.0;
+            }
+
+            double[] fees = new double[VehicleEnum.values().length];
+
+            public boolean isNotAllowed(VehicleEnum vehicle) {
+                return notAllowedVehicles[vehicle.label];
+            }
+
+            public void allow(VehicleEnum vehicle) {
+                notAllowedVehicles[vehicle.label] = false;
+            }
+
+            public void disallow(VehicleEnum vehicle) {
+                notAllowedVehicles[vehicle.label] = true;
+            }
+
+            boolean[] notAllowedVehicles = new boolean[VehicleEnum.values().length];
+        };
         lessThanTen.setFee(VehicleEnum.SCOOTER, 1.0);
         lessThanTen.setFee(VehicleEnum.BIKE, 1.0);
 
-        ITemperature betweenNegativeTenAndZero = temperature -> -10.0 <= temperature && temperature <= 0.0;
+        ITemperature betweenNegativeTenAndZero = new ITemperature() {
+            @Override
+            public boolean isThis(Double val) {
+                return -10.0 <= val && val <= 0.0;
+            }
+
+
+            public Double getFee(VehicleEnum vehicle) {
+                return fees[vehicle.label];
+            };
+
+
+            public void setFee(VehicleEnum vehicle, Double fee) {
+                fees[vehicle.label] = fee;
+            }
+
+
+            public void removeFee(VehicleEnum vehicle) {
+                fees[vehicle.label] = 0.0;
+            }
+
+            double[] fees = new double[VehicleEnum.values().length];
+
+            public boolean isNotAllowed(VehicleEnum vehicle) {
+                return notAllowedVehicles[vehicle.label];
+            }
+
+            public void allow(VehicleEnum vehicle) {
+                notAllowedVehicles[vehicle.label] = false;
+            }
+
+            public void disallow(VehicleEnum vehicle) {
+                notAllowedVehicles[vehicle.label] = true;
+            }
+
+            boolean[] notAllowedVehicles = new boolean[VehicleEnum.values().length];
+        };
         lessThanTen.setFee(VehicleEnum.SCOOTER, 0.5);
         lessThanTen.setFee(VehicleEnum.BIKE, 0.5);
 
@@ -144,10 +262,80 @@ public class FeeRepository {
          * More than 20m/s and between 10m/s and 20m/s.
          * Only bike has fees/is not allowed.
          */
-        IWindSpeed moreThanTwenty = speed -> speed > 20.0;
+        IWindSpeed moreThanTwenty = new IWindSpeed() {
+            @Override
+            public boolean isThis(Double val) {
+                return val > 20.0;
+            }
+
+            public Double getFee(VehicleEnum vehicle) {
+                return fees[vehicle.label];
+            };
+
+
+            public void setFee(VehicleEnum vehicle, Double fee) {
+                fees[vehicle.label] = fee;
+            }
+
+
+            public void removeFee(VehicleEnum vehicle) {
+                fees[vehicle.label] = 0.0;
+            }
+
+            double[] fees = new double[VehicleEnum.values().length];
+
+            public boolean isNotAllowed(VehicleEnum vehicle) {
+                return notAllowedVehicles[vehicle.label];
+            }
+
+            public void allow(VehicleEnum vehicle) {
+                notAllowedVehicles[vehicle.label] = false;
+            }
+
+            public void disallow(VehicleEnum vehicle) {
+                notAllowedVehicles[vehicle.label] = true;
+            }
+
+            boolean[] notAllowedVehicles = new boolean[VehicleEnum.values().length];
+        };
         moreThanTwenty.disallow(VehicleEnum.BIKE);
 
-        IWindSpeed betweenTenAndTwenty = speed -> 10.0 <= speed && speed <= 20.0;
+        IWindSpeed betweenTenAndTwenty = new IWindSpeed() {
+            @Override
+            public boolean isThis(Double val) {
+                return 10.0 <= val && val <= 20.0;
+            }
+
+            public Double getFee(VehicleEnum vehicle) {
+                return fees[vehicle.label];
+            };
+
+
+            public void setFee(VehicleEnum vehicle, Double fee) {
+                fees[vehicle.label] = fee;
+            }
+
+
+            public void removeFee(VehicleEnum vehicle) {
+                fees[vehicle.label] = 0.0;
+            }
+
+            double[] fees = new double[VehicleEnum.values().length];
+
+            public boolean isNotAllowed(VehicleEnum vehicle) {
+                return notAllowedVehicles[vehicle.label];
+            }
+
+            public void allow(VehicleEnum vehicle) {
+                notAllowedVehicles[vehicle.label] = false;
+            }
+
+            public void disallow(VehicleEnum vehicle) {
+                notAllowedVehicles[vehicle.label] = true;
+            }
+
+            boolean[] notAllowedVehicles = new boolean[VehicleEnum.values().length];
+        };
         betweenTenAndTwenty.setFee(VehicleEnum.BIKE, 0.5);
 
 

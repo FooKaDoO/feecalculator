@@ -14,9 +14,7 @@ public interface IStation {
      * @param vehicle Given vehicle.
      * @return The fee in this station.
      */
-    default Double getFee(VehicleEnum vehicle) {
-        return fees[vehicle.label];
-    };
+    Double getFee(VehicleEnum vehicle);
 
     /**
      * Takes in VehicleEnum vehicle and Double fee and sets the fee
@@ -24,17 +22,13 @@ public interface IStation {
      * @param vehicle VehicleEnum of vehicle.
      * @param fee Desired fee for vehicle.
      */
-    default void setFee(VehicleEnum vehicle, Double fee) {
-        fees[vehicle.label] = fee;
-    }
+    void setFee(VehicleEnum vehicle, Double fee);
 
     /**
      * Takes in VehicleEnum vehicle and sets its fee to 0.0.
      * @param vehicle VehicleEnum of vehicle.
      */
-    default void removeFee(VehicleEnum vehicle) {
-        fees[vehicle.label] = 0.0;
-    }
+    void removeFee(VehicleEnum vehicle);
 
     /**
      * Double matrix which has fees for each vehicle based on

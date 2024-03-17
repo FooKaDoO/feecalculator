@@ -23,9 +23,7 @@ public interface IWeather {
      * @param vehicle Given vehicle.
      * @return The fee in this weather.
      */
-    default Double getFee(VehicleEnum vehicle) {
-        return fees[vehicle.label];
-    };
+    Double getFee(VehicleEnum vehicle);
 
     /**
      * Takes in VehicleEnum vehicle and Double fee and sets the fee
@@ -33,17 +31,13 @@ public interface IWeather {
      * @param vehicle VehicleEnum of vehicle.
      * @param fee Desired fee for vehicle.
      */
-    default void setFee(VehicleEnum vehicle, Double fee) {
-        fees[vehicle.label] = fee;
-    }
+    void setFee(VehicleEnum vehicle, Double fee);
 
     /**
      * Takes in VehicleEnum vehicle and sets its fee to 0.0.
      * @param vehicle VehicleEnum of vehicle.
      */
-    default void removeFee(VehicleEnum vehicle) {
-        fees[vehicle.label] = 0.0;
-    }
+    void removeFee(VehicleEnum vehicle);
 
     /**
      * Double matrix which has fees for each vehicle based on
@@ -57,27 +51,21 @@ public interface IWeather {
      * @param vehicle VehicleEnum of vehicle.
      * @return If vehicle is allowed to drive in this weather condition.
      */
-    default boolean isNotAllowed(VehicleEnum vehicle) {
-        return notAllowedVehicles[vehicle.label];
-    }
+    boolean isNotAllowed(VehicleEnum vehicle);
 
     /**
      * Takes in VehicleEnum vehicle and allows it to drive in this
      * weather condition.
      * @param vehicle VehicleEnum of vehicle.
      */
-    default void allow(VehicleEnum vehicle) {
-        notAllowedVehicles[vehicle.label] = false;
-    }
+    void allow(VehicleEnum vehicle);
 
     /**
      * Takes in VehicleEnum vehicle and disallows it to drive in this
      * weather condition.
      * @param vehicle VehicleEnum of vehicle.
      */
-    default void disallow(VehicleEnum vehicle) {
-        notAllowedVehicles[vehicle.label] = true;
-    }
+    void disallow(VehicleEnum vehicle);
 
     /**
      * Boolean matrix to show if a vehicle is allowed to drive in this
