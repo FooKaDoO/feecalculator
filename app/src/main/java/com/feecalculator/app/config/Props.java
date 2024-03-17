@@ -8,5 +8,6 @@ import org.springframework.stereotype.Component;
 public class Props {
 
     private String cron;
+    private String URI;
 
 }
