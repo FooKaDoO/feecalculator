@@ -1,15 +1,13 @@
 package com.feecalculator.app.service;
 
-import com.feecalculator.app.repository.StationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.feecalculator.app.entity.XML.Observations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class DatafetchService {
-
-    @Autowired
-    private StationRepository stationRepository;
 
     /**
      * Fetches data from given URI.<br>
@@ -20,5 +18,10 @@ public class DatafetchService {
     public String fetchDataFromURI(String URI) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(URI, String.class);
+    }
+
+    public Observations mapXMLtoEntity(String XML) throws JsonProcessingException {
+        XmlMapper xmlMapper = new XmlMapper();
+        return xmlMapper.readValue(XML, Observations.class);
     }
 }
