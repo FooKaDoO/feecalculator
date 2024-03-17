@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduledTasks {
 
-    @Scheduled(cron = "*/30 * * * * ?")
+    @Scheduled(cron = "${custom.cron}")
     public void getData() {
-
+        
     }
 }
