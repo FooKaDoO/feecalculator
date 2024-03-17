@@ -33,10 +33,14 @@ public class DatabaseInit {
      * Maps all Observations entity stations to a list of stations. <br>
      * Saves the list of stations to the database. <br>
      * <br>
-     * In case of XML parsing errors, prints them to the terminal.
+     * In case of XML parsing errors, prints them to the terminal.<br>
+     * <br>
+     * Does not fetch, if there is data in the database already.
      */
     @EventListener(ApplicationReadyEvent.class)
     public void getData() {
+        if (stationService.getCountOfDatabaseEntries() > 0)
+            return;
         String data = datafetchService.fetchDataFromURI(URI);
         try {
             Observations observations = datafetchService.mapXMLtoEntity(data);

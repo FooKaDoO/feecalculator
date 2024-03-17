@@ -44,5 +44,9 @@ public class StationService {
         stationRepository.saveAll(stations);
     }
 
+    public Long getCountOfDatabaseEntries() {
+        return stationRepository.count();
+    }
+
 
 }
