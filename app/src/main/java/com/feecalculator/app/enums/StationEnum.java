@@ -31,4 +31,24 @@ public enum StationEnum {
             default -> null;
         };
     }
+
+    /**
+     * Returns StationEnum by simplified name. <br>
+     * Analogous to fromWMOCode(). <br>
+     * <br>
+     * Used for HTTP requests. That is why
+     * the name is simplified.
+     * @param name Name of station.
+     * @return StationEnum with given name.
+     */
+    public static StationEnum fromName(String name) {
+        if (name == null)
+            return null;
+        return switch (name.toLowerCase()) {
+            case "tallinn" -> StationEnum.TALLINN;
+            case "tartu" -> StationEnum.TARTU;
+            case "pärnu" -> StationEnum.PÄRNU;
+            default -> null;
+        };
+    }
 }
