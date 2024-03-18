@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/fee")
+@CrossOrigin("http://localhost:8080/")
 public class FeeController {
 
     @Autowired

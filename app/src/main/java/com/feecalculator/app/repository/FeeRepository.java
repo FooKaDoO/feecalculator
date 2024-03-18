@@ -241,8 +241,8 @@ public class FeeRepository {
 
             boolean[] notAllowedVehicles = new boolean[VehicleEnum.values().length];
         };
-        lessThanTen.setFee(VehicleEnum.SCOOTER, 0.5);
-        lessThanTen.setFee(VehicleEnum.BIKE, 0.5);
+        betweenNegativeTenAndZero.setFee(VehicleEnum.SCOOTER, 0.5);
+        betweenNegativeTenAndZero.setFee(VehicleEnum.BIKE, 0.5);
 
 
         temperatures.add(lessThanTen);
