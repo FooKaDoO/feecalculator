@@ -34,6 +34,12 @@ public class FeeController {
                     e.getMessage(),
                     e.getCause()
             );
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Error getting data, try adjusting input parameters.",
+                    e.getCause()
+            );
         }
 
     }
