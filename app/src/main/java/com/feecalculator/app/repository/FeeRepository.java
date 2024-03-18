@@ -169,6 +169,8 @@ public class FeeRepository {
         ITemperature lessThanTen = new ITemperature() {
             @Override
             public boolean isThis(Double val) {
+                if (val == null)
+                    return false;
                 return val < -10.0;
             }
             public Double getFee(VehicleEnum vehicle) {
@@ -207,6 +209,8 @@ public class FeeRepository {
         ITemperature betweenNegativeTenAndZero = new ITemperature() {
             @Override
             public boolean isThis(Double val) {
+                if (val == null)
+                    return false;
                 return -10.0 <= val && val <= 0.0;
             }
 
@@ -265,6 +269,8 @@ public class FeeRepository {
         IWindSpeed moreThanTwenty = new IWindSpeed() {
             @Override
             public boolean isThis(Double val) {
+                if (val == null)
+                    return false;
                 return val > 20.0;
             }
 
@@ -303,6 +309,8 @@ public class FeeRepository {
         IWindSpeed betweenTenAndTwenty = new IWindSpeed() {
             @Override
             public boolean isThis(Double val) {
+                if (val == null)
+                    return false;
                 return 10.0 <= val && val <= 20.0;
             }
 
